@@ -9,6 +9,7 @@
 namespace Notification\Model;
 
 use Notification\Service\MessageServiceInterface;
+use StdLib\VarDumper;
 
 /**
  * Class Message
@@ -25,10 +26,12 @@ class Message implements MessageInterface
 
 	/**
 	 * @param $id
+	 * @param array $meta
 	 */
-	public function __construct($id)
+	public function __construct($id, $meta = array())
 	{
 		$this->id = $id;
+		$this->setMeta($meta);
 	}
 
 	/**
@@ -63,10 +66,10 @@ class Message implements MessageInterface
 	 */
 	public function serialize()
 	{
-		return serialize(array_merge(
-			array('id' => $this->getId()),
-			$this->getMeta()
-		));
+		return serialize(array(
+				$this->getId(),
+				$this->getMeta(),
+			));
 	}
 
 	/**
@@ -74,12 +77,7 @@ class Message implements MessageInterface
 	 */
 	public function unserialize($serialized)
 	{
-		$this->meta = (array) unserialize($serialized);
-
-		if (isset($this->meta['id'])) {
-			$this->id = $this->meta['id'];
-			unset($this->meta['id']);
-		}
+		list($this->id, $this->meta) = (array) unserialize($serialized);
 	}
 
 	public function publish(MessageServiceInterface $service)

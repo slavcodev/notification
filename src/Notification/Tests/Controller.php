@@ -47,11 +47,11 @@ class Controller extends \PhpUnit_Framework_TestCase
 		// Создаем рассылку
 		$messenger = new Messenger('slavcodev');
 
-		// Подписываемся очередь на рассылку
+		// Подписываем очередь на рассылку
 		$queue1 = new Queue('user1');
 		$messenger->bind($queue1);
 
-		// Подписываемся очередь на рассылку
+		// Подписываем очередь на рассылку
 		$queue2 = new Queue('user2');
 		$messenger->bind($queue2, new SpecificationById('ID1'));
 		$messenger->bind($queue2, new SpecificationById('ID2'));
@@ -78,14 +78,14 @@ class Controller extends \PhpUnit_Framework_TestCase
 		$messenger = new Messenger('messenger');
 		$queue = new Queue('queue');
 
-		// Подписываемся очередь на рассылку
+		// Подписываем очередь на рассылку
 		$messenger->bind($queue);
 
 		// Сохраняемся
 		$this->messengerService->save($messenger);
 		$this->queueService->save($queue);
 
-		// Восстанавливаемся
+		// Восстанавливаем сохранения
 		$messenger = $this->messengerService->get('messenger');
 		$queue = $this->queueService->get('queue');
 

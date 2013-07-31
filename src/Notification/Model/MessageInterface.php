@@ -25,6 +25,17 @@ interface MessageInterface extends Serializable
 	public function getId();
 
 	/**
+	 * @param array $meta
+	 * @return MessageInterface
+	 */
+	public function setMeta($meta);
+
+	/**
+	 * @return array
+	 */
+	public function getMeta();
+
+	/**
 	 * @param MessageServiceInterface $service
 	 * @return void
 	 */

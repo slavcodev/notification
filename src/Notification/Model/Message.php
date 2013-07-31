@@ -20,6 +20,8 @@ class Message implements MessageInterface
 {
 	/** @var mixed */
 	protected $id;
+	/** @var array */
+	protected $meta = array();
 
 	/**
 	 * @param $id
@@ -38,14 +40,33 @@ class Message implements MessageInterface
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getMeta()
+	{
+		return $this->meta;
+	}
+
+	/**
+	 * @param array $meta
+	 * @return MessageInterface
+	 */
+	public function setMeta($meta)
+	{
+		$this->meta = (array) $meta;
+
+		return $this;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function serialize()
 	{
-		return serialize(array(
-				$this->id,
-				'Message body',
-			));
+		return serialize(array_merge(
+			array('id' => $this->getId()),
+			$this->getMeta()
+		));
 	}
 
 	/**
@@ -53,9 +74,12 @@ class Message implements MessageInterface
 	 */
 	public function unserialize($serialized)
 	{
-		list(
-			$this->id
-			) = unserialize($serialized);
+		$this->meta = (array) unserialize($serialized);
+
+		if (isset($this->meta['id'])) {
+			$this->id = $this->meta['id'];
+			unset($this->meta['id']);
+		}
 	}
 
 	public function publish(MessageServiceInterface $service)

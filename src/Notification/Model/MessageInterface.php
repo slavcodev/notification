@@ -9,6 +9,7 @@
 namespace Notification\Model;
 
 use Notification\Service\MessageServiceInterface;
+use DateTime;
 use Serializable;
 
 /**
@@ -34,6 +35,11 @@ interface MessageInterface extends Serializable
 	 * @return array
 	 */
 	public function getMeta();
+
+	/**
+	 * @return DateTime
+	 */
+	public function getCreateAt();
 
 	/**
 	 * @param MessageServiceInterface $service

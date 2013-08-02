@@ -8,6 +8,7 @@
 
 namespace Notification\Model;
 
+use DateTime;
 use Notification\Service\MessageServiceInterface;
 use StdLib\VarDumper;
 
@@ -21,6 +22,8 @@ class Message implements MessageInterface
 {
 	/** @var mixed */
 	protected $id;
+	/** @var DateTime */
+	protected $createAt;
 	/** @var array */
 	protected $meta = array();
 
@@ -31,6 +34,7 @@ class Message implements MessageInterface
 	public function __construct($id, $meta = array())
 	{
 		$this->id = $id;
+		$this->createAt = new DateTime();
 		$this->setMeta($meta);
 	}
 
@@ -62,12 +66,21 @@ class Message implements MessageInterface
 	}
 
 	/**
+	 * @return DateTime
+	 */
+	public function getCreateAt()
+	{
+		return $this->createAt;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function serialize()
 	{
 		return serialize(array(
 				$this->getId(),
+				$this->getCreateAt()->format(DateTime::W3C),
 				$this->getMeta(),
 			));
 	}
@@ -77,7 +90,11 @@ class Message implements MessageInterface
 	 */
 	public function unserialize($serialized)
 	{
-		list($this->id, $this->meta) = (array) unserialize($serialized);
+		$data = (array) unserialize($serialized);
+
+		$this->id = array_shift($data);
+		$this->createAt = DateTime::createFromFormat(DateTime::W3C, array_shift($data));
+		$this->setMeta(array_shift($data));
 	}
 
 	public function publish(MessageServiceInterface $service)

@@ -9,6 +9,7 @@
 namespace Notification\Service;
 
 use Notification\Model\MessageInterface;
+use Notification\Model\QueueInterface;
 
 /**
  * Interface MessageServiceInterface
@@ -18,5 +19,15 @@ use Notification\Model\MessageInterface;
  */
 interface MessageServiceInterface
 {
+	/**
+	 * @param MessageInterface $message
+	 * @return MessageServiceInterface
+	 */
 	public function publish(MessageInterface $message);
+
+	/**
+	 * @param QueueInterface $queue
+	 * @return MessageServiceInterface
+	 */
+	public function dispatch(QueueInterface $queue);
 }

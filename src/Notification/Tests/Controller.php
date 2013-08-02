@@ -101,8 +101,8 @@ class Controller extends \PhpUnit_Framework_TestCase
 		$this->assertEquals(2, $queue->count());
 		$this->assertEquals(1, $queue->seek(1)->count());
 
-		while ($message = $queue->dequeue()) {
-			$this->messageService->publish($message);
-		}
+		$this->messageService
+			->publish($queue->dequeue())
+			->dispatch($queue);
 	}
 }

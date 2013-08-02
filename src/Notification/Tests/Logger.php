@@ -9,6 +9,7 @@
 namespace Notification\Tests;
 
 use Notification\Model\MessageInterface;
+use Notification\Model\QueueInterface;
 use Notification\Service\MessageServiceInterface;
 
 /**
@@ -19,8 +20,26 @@ use Notification\Service\MessageServiceInterface;
  */
 class Logger implements MessageServiceInterface
 {
+	/**
+	 * @param MessageInterface $message
+	 * @return MessageServiceInterface
+	 */
 	public function publish(MessageInterface $message)
 	{
 		echo sprintf('Publish "%s" message', serialize($message)), PHP_EOL;
+		return $this;
+	}
+
+	/**
+	 * @param QueueInterface $queue
+	 * @return MessageServiceInterface
+	 */
+	public function dispatch(QueueInterface $queue)
+	{
+		while ($message = $queue->dequeue()) {
+			$this->publish($message);
+		}
+
+		return $this;
 	}
 }

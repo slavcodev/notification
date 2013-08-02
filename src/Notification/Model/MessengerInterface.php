@@ -8,13 +8,15 @@
 
 namespace Notification\Model;
 
+use IteratorAggregate;
+
 /**
  * Interface MessengerInterface
  *
  * @author Veaceslav Medvedev <slavcopost@gmail.com>
  * @version 0.1
  */
-interface MessengerInterface
+interface MessengerInterface extends IteratorAggregate
 {
 	/**
 	 * @return mixed
@@ -22,10 +24,9 @@ interface MessengerInterface
 	public function getId();
 
 	/**
-	 * @param MessageInterface $message
-	 * @return void
+	 * @return \Traversable|QueueInterface[]
 	 */
-	public function send(MessageInterface $message);
+	public function getIterator();
 
 	/**
 	 * @param QueueInterface $queue

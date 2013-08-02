@@ -9,6 +9,7 @@
 namespace Notification\Tests;
 
 use Notification\Model\MessageInterface;
+use Notification\Model\MessengerInterface;
 use Notification\Model\QueueInterface;
 use Notification\Service\MessageServiceInterface;
 
@@ -38,6 +39,22 @@ class Logger implements MessageServiceInterface
 	{
 		while ($message = $queue->dequeue()) {
 			$this->publish($message);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param MessageInterface $message
+	 * @param MessengerInterface $messenger
+	 * @return MessageServiceInterface
+	 */
+	public function send(
+		MessageInterface $message,
+		MessengerInterface $messenger
+	) {
+		foreach ($messenger->getIterator() as $queue) {
+			$queue->enqueue($message);
 		}
 
 		return $this;

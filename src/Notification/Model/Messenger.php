@@ -8,6 +8,8 @@
 
 namespace Notification\Model;
 
+use ArrayIterator;
+
 /**
  * Class Messenger
  *
@@ -99,5 +101,10 @@ class Messenger implements MessengerInterface
 				$queue->enqueue($message);
 			}
 		}
+	}
+
+	public function getIterator()
+	{
+		return new ArrayIterator($this->queues);
 	}
 }

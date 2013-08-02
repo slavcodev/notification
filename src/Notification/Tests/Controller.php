@@ -102,7 +102,7 @@ class Controller extends \PhpUnit_Framework_TestCase
 		$this->assertEquals(1, $queue->seek(1)->count());
 
 		while ($message = $queue->dequeue()) {
-			$message->publish($this->messageService);
+			$this->messageService->publish($message);
 		}
 	}
 }

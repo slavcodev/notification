@@ -9,8 +9,6 @@
 namespace Notification\Model;
 
 use DateTime;
-use Notification\Service\MessageServiceInterface;
-use StdLib\VarDumper;
 
 /**
  * Class Message
@@ -47,11 +45,19 @@ class Message implements MessageInterface
 	}
 
 	/**
-	 * @return array
+	 * @param mixed $key
+	 * @param mixed $default
+	 * @return mixed
 	 */
-	public function getMeta()
+	public function getMeta($key = null, $default = null)
 	{
-		return $this->meta;
+		if (null === null) {
+			return $this->meta;
+		} elseif (isset($this->meta[$key])) {
+			return $this->meta[$key];
+		} else {
+			return $default;
+		}
 	}
 
 	/**
@@ -95,10 +101,5 @@ class Message implements MessageInterface
 		$this->id = array_shift($data);
 		$this->createAt = DateTime::createFromFormat(DateTime::W3C, array_shift($data));
 		$this->setMeta(array_shift($data));
-	}
-
-	public function publish(MessageServiceInterface $service)
-	{
-		$service->publish($this);
 	}
 }

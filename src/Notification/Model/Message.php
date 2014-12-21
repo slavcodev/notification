@@ -51,7 +51,7 @@ class Message implements MessageInterface
 	 */
 	public function getMeta($key = null, $default = null)
 	{
-		if (null === null) {
+		if ($key === null) {
 			return $this->meta;
 		} elseif (isset($this->meta[$key])) {
 			return $this->meta[$key];
